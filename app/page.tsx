@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import AccountBalances from "./components/AccountBalances";
 
 export default function Home() {
   const [token, setToken] = useState(null);
@@ -29,8 +30,8 @@ export default function Home() {
       const response = await fetch(`/api/getAccounts?token=${token}`); // Pass token as a query parameter
       const data = await response.json();
 
-      if (response.ok && data?.data?.accounts) {
-        setAccounts(data.data?.accounts);
+      if (response.ok && data) {
+        setAccounts(data);
       } else {
         console.error("Failed to fetch accounts:", data.error);
       }
@@ -58,11 +59,10 @@ export default function Home() {
     fetchAccounts();
   }, [token]);
 
-  console.log(accounts);
-
   return (
     <main className="flex min-h-screen flex-col justify-start p-10">
       <h1 className="text-2xl">Investec Savings Tracker</h1>
+      <AccountBalances accounts={accounts} />
     </main>
   );
 }
